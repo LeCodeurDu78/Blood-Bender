@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://3fhmxihm2giw" path="res://scripts/weapons/Shotgun.gd" id="1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_shotgun_placeholder"]
+size = Vector3(0.12, 0.15, 0.7)
+
+[node name="Shotgun" type="Node3D"]
+script = ExtResource("1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.3, -0.6)
+mesh = SubResource("BoxMesh_shotgun_placeholder")
