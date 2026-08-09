@@ -39,25 +39,20 @@ class_name Player
 
 # --- Projectile Sanguin Direct ---
 @export_group("Blood Projectile")
-## Scène du projectile (voir scenes/projectiles/BloodProjectile.tscn).
 @export var projectile_scene: PackedScene
-## Temps de maintien pour atteindre la charge maximale (secondes).
 @export var projectile_max_charge_time: float = 1.2
-## Coût en Sang à charge minimale (appui bref) / maximale (charge pleine).
 @export var projectile_min_blood_cost: float = 10.0
 @export var projectile_max_blood_cost: float = 25.0
-## Dégâts infligés à charge minimale / maximale.
 @export var projectile_min_damage: float = 25.0
 @export var projectile_max_damage: float = 70.0
 @export var projectile_speed: float = 40.0
-## Décalage de spawn devant la caméra, pour éviter que le projectile
-## naisse à l'intérieur du corps du joueur (auto-collision).
 @export var projectile_spawn_offset: float = 1.0
 
 # --- Nœuds enfants ---
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var grapple_component: GrappleComponent = $GrappleComponent
 @onready var weapon_component: WeaponComponent = $Head/Camera3D/WeaponComponent
 
 # --- État interne ---
@@ -78,6 +73,8 @@ func _ready() -> void:
 	health_component.player_died.connect(_on_player_died)
 	# Le WeaponManager a besoin du HealthComponent pour le coût des
 	# Morph Attacks et la conversion munitions -> sang de chaque arme.
+	grapple_component.set_camera(camera)
+	grapple_component.set_health_component(health_component)
 	weapon_component.set_health_component(health_component)
 
 
@@ -107,6 +104,11 @@ func _physics_process(delta: float) -> void:
 	_handle_jump()
 	_handle_dash_input()
 	_handle_projectile_charge(delta)
+
+	if grapple_component.is_active:
+		velocity = grapple_component.get_travel_velocity(delta, global_transform.origin)
+		move_and_slide()
+		return
 
 	if _is_dashing:
 		_process_dash(delta)

@@ -11,8 +11,11 @@ class_name DummyEnemy
 ## vrai mannequin de stand de tir, pas un ennemi qui reste mort.
 ## ============================================================
 
+enum EnemyWeightClass { LIGHT, HEAVY }
+
 @export var respawns: bool = true
 @export var respawn_delay: float = 3.0
+@export var weight_class: EnemyWeightClass = EnemyWeightClass.LIGHT
 
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var hurtbox: HurtboxComponent = $HurtboxComponent
