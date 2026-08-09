@@ -1,38 +1,20 @@
 extends Node3D
 class_name HealthComponent
 
-## ============================================================
-## HealthComponent.gd
-## ------------------------------------------------------------
-## Composant réutilisable gérant la ressource unique du jeu :
-## la SANTÉ (= Sang = Énergie). Utilisé par le joueur ET par
-## toutes les entités combattantes (DummyEnemy, futurs ennemis).
-##
-## IMPORTANT (Phase 3) : ce composant est maintenant partagé par
-## le joueur ET les ennemis. Seul le HealthComponent DU JOUEUR
-## doit alimenter le HUD via l'EventBus global -- sinon la vie
-## d'un ennemi touché viendrait écraser la barre de vie affichée
-## à l'écran ! Le flag `is_player_health` contrôle ce filtrage.
-## ============================================================
-
-# --- Signaux locaux (connexions directes) ---
+signal invulnerability_changed(is_invulnerable: bool)
 signal health_changed(current: float, max: float)
-signal player_died  ## Conservé pour compat Phase 1/2 (Player.gd s'y connecte).
-signal died         ## Alias générique, identique à player_died, à utiliser
-                     ## pour toute entité non-joueur (ennemis, PNJ...).
+signal player_died
+signal died
 
-# --- Paramètres exportés ---
+
 @export var max_health: float = 100.0
-
-## Seul le HealthComponent attaché au Player doit avoir ce flag à `true`.
-## Contrôle si cette instance relaie ses signaux sur l'EventBus global
-## (utilisé par le HUD). Les ennemis doivent le laisser à `false`.
 @export var is_player_health: bool = false
 
 # --- État interne ---
 var current_health: float
-
 var _is_dead: bool = false
+var is_invulnerable: bool = false
+var _invuln_timer_id: int = 0
 
 
 func _ready() -> void:
@@ -40,14 +22,32 @@ func _ready() -> void:
 	_broadcast_health()
 
 
-## Consomme de la vie/sang (dégâts volontaires liés aux capacités du joueur :
-## Dash, Morph Attack, tir "à sang", etc., ou dégâts de combat subis).
-## `allow_lethal` = true pour les dégâts de combat (armes, ennemis), qui
-## doivent pouvoir tuer. Les dépenses de capacités du joueur restent
-## toujours non-létales (au moins 1 PV restant).
+func set_invulnerable(duration: float) -> void:
+	is_invulnerable = true
+	invulnerability_changed.emit(true)
+
+	_invuln_timer_id += 1
+	var this_call_id: int = _invuln_timer_id
+
+	if duration > 0.0:
+		await get_tree().create_timer(duration).timeout
+		if this_call_id == _invuln_timer_id:
+			clear_invulnerability()
+
+
+func clear_invulnerability() -> void:
+	if not is_invulnerable:
+		return
+	is_invulnerable = false
+	invulnerability_changed.emit(false)
+
+
 func consume_blood(amount: float, allow_lethal: bool = false) -> bool:
 	if amount <= 0.0:
 		return true
+
+	if allow_lethal and is_invulnerable:
+		return false
 
 	if not allow_lethal and (current_health - amount) < 1.0:
 		return false
@@ -66,7 +66,6 @@ func consume_blood(amount: float, allow_lethal: bool = false) -> bool:
 	return true
 
 
-## Soigne l'entité (exécutions, glyphes de sang, kills, régénération...).
 func heal_blood(amount: float) -> void:
 	if amount <= 0.0 or _is_dead:
 		return
@@ -75,12 +74,10 @@ func heal_blood(amount: float) -> void:
 	_broadcast_health()
 
 
-## Réinitialise complètement le composant (PV pleins, plus "mort").
-## Utile pour un respawn de joueur à un checkpoint, ou pour un mannequin
-## d'entraînement (DummyEnemy) qui se régénère après un délai.
 func reset() -> void:
 	current_health = max_health
 	_is_dead = false
+	clear_invulnerability()
 	_broadcast_health()
 
 
@@ -88,8 +85,6 @@ func get_health_ratio() -> float:
 	return current_health / max_health
 
 
-## Vérifie si une dépense de `amount` PV est possible sans mourir.
-## Utile pour griser une icône d'arme/capacité AVANT de tenter l'action.
 func can_afford(amount: float) -> bool:
 	return (current_health - amount) >= 1.0
 

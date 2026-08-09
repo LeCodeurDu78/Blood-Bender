@@ -106,7 +106,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, -12)
 
 [node name="DummyEnemy3" parent="." unique_id=183352090 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 3, -8)
-weight_class = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2015344926]
 

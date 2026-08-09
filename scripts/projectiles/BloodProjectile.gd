@@ -1,21 +1,7 @@
 extends Area3D
 class_name BloodProjectile
 
-## ============================================================
-## BloodProjectile.gd
-## ------------------------------------------------------------
-## Projectile sanguin lourd tiré via Player._fire_blood_projectile()
-## (touche R / clic molette). Vole en ligne droite à vitesse
-## constante, inflige de gros dégâts à la première HurtboxComponent
-## touchée, et se détruit à l'impact (mur, décor ou cible) — ou après
-## `lifetime` secondes si rien n'est touché.
-##
-## Le coût en Sang (10-25 PV, selon la charge) et les dégâts infligés
-## sont décidés et prélevés par Player.gd AVANT l'instanciation :
-## ce script ne gère que la physique/collision du projectile en vol.
-## ============================================================
 
-## Durée de vie max avant auto-destruction si rien n'est touché.
 @export var lifetime: float = 4.0
 
 var _velocity: Vector3 = Vector3.ZERO
@@ -33,8 +19,6 @@ func _ready() -> void:
 	timer.timeout.connect(_on_lifetime_expired)
 
 
-## Appelé par Player.gd juste après l'instanciation, avant tout ajout
-## à l'arbre de scène n'est requis mais fonctionne aussi après.
 func launch(direction: Vector3, speed: float, damage: float) -> void:
 	var dir: Vector3 = direction.normalized() if direction.length() > 0.001 else Vector3.FORWARD
 	_velocity = dir * speed
@@ -52,7 +36,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_body_entered(_body: Node3D) -> void:
-	# Corps solide (mur, décor Layer 1) : le projectile s'arrête net.
 	_resolve_impact()
 
 
@@ -66,7 +49,6 @@ func _resolve_impact() -> void:
 	if _has_hit:
 		return
 	_has_hit = true
-	# TODO (Phase 3 - VFX) : éclaboussure de sang + son d'impact lourd.
 	queue_free()
 
 

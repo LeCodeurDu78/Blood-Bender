@@ -1,27 +1,8 @@
 extends WeaponBase
 class_name Scythe
 
-## ============================================================
-## Scythe.gd (Faux Hématique)
-## ------------------------------------------------------------
-## Arme de mêlée à ZONE : chaque coup principal balaie un cône de
-## 180° devant le joueur (WeaponBase._cone_attack) et draine du sang
-## pour CHAQUE ennemi touché — plus il y a d'ennemis dans le cône,
-## plus le rendement est élevé. Entièrement gratuite (comme Katana
-## et Lames Doubles).
-##
-## EXTRACTION (clic droit) : "Balayage fendeur" — cône plus étroit
-## mais légèrement plus puissant, pensé pour achever une cible isolée
-## sans gaspiller l'ouverture à 180° du coup principal.
-##
-## MORPH ATTACK : "Moulinet circulaire 360°" — cône complet (360°)
-## qui touche TOUT ce qui est à portée et repousse chaque cible
-## touchée (voir HurtboxComponent.apply_knockback).
-## ============================================================
-
 @export var melee_range: float = 3.0
 @export var cone_angle_deg: float = 180.0
-## Sang rendu au joueur PAR ennemi touché (rendement proportionnel).
 @export var heal_per_enemy_hit: float = 3.0
 
 @export_group("Extraction — Balayage Fendeur")
@@ -52,7 +33,6 @@ func _ready() -> void:
 	super._ready()
 
 
-## Surcharge complète (arme CàC gratuite).
 func shoot() -> bool:
 	if _fire_timer > 0.0:
 		return false
@@ -69,9 +49,6 @@ func _on_shoot_effect() -> void:
 	pass
 
 
-## Exécute une attaque en cône et applique le rendement d'extraction :
-## `heal_per_enemy_hit` PV par ennemi touché (proportionnel au nombre
-## de cibles dans le cône). Retourne la liste des cibles touchées.
 func _perform_cone_slash(damage: float, angle_deg: float, range_value: float, knockback_force: float) -> Array[HurtboxComponent]:
 	var hits: Array[HurtboxComponent] = _cone_attack(damage, angle_deg, range_value, knockback_force)
 	if not hits.is_empty() and health_component != null:
@@ -79,8 +56,6 @@ func _perform_cone_slash(damage: float, angle_deg: float, range_value: float, kn
 	return hits
 
 
-## Extraction (clic droit) : Balayage fendeur — cône plus étroit,
-## légèrement plus puissant. Entièrement gratuit, comme le reste de l'arme.
 func extraction() -> bool:
 	if _extraction_timer > 0.0:
 		return false
@@ -96,8 +71,6 @@ func extraction() -> bool:
 	return true
 
 
-## Morph Attack : Moulinet circulaire 360° — cône complet, repousse
-## toutes les cibles touchées.
 func perform_morph_attack() -> void:
 	_perform_cone_slash(
 		base_damage * morph_damage_multiplier,
@@ -105,4 +78,3 @@ func perform_morph_attack() -> void:
 		melee_range,
 		morph_knockback_force
 	)
-	# TODO (Phase 3 - VFX) : anneau de sang tournoyant + secousse caméra.

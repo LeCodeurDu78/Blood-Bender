@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bo0do0uy5ela0" path="res://scripts/enemies/DummyEnemy.gd" id="1"]
 [ext_resource type="Script" uid="uid://chxxkd4drk4k3" path="res://scripts/components/HealthComponent.gd" id="2_uk8lh"]
 [ext_resource type="Script" uid="uid://bi3vgqpgqhc3q" path="res://scripts/components/HurtboxComponent.gd" id="3_385pu"]
+[ext_resource type="Script" uid="uid://cnop6kmiq12bw" path="res://scripts/components/TraumaComponent.gd" id="4_trauma"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dummy"]
 radius = 0.45
@@ -27,7 +28,10 @@ mesh = SubResource("CapsuleMesh_dummy")
 
 [node name="HealthComponent" type="Node3D" parent="." unique_id=1146498612]
 script = ExtResource("2_uk8lh")
-max_health = 60.0
+max_health = 2000.0
+
+[node name="TraumaComponent" type="Node3D" parent="." unique_id=750099841]
+script = ExtResource("4_trauma")
 
 [node name="HurtboxComponent" type="Area3D" parent="." unique_id=14553695]
 collision_layer = 4

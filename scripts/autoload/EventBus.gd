@@ -5,7 +5,7 @@ signal health_changed(current: float, max: float)
 signal consume_blood(blood_cost: float, allow_lethal: bool, response: Dictionary)
 signal player_died
 
-# --- Weapons ---
+# --- Weapon ---
 signal weapon_changed(weapon: WeaponBase)
 signal ammo_changed(current_ammo: int, max_ammo: int, blood_mode: bool, blood_cost: float)
 signal shot_fired(weapon_name: String)
@@ -32,7 +32,7 @@ signal parry_success(attacker: Node)
 signal parry_failed
 signal survival_parry_triggered(healed_amount: float)
 signal block_started
-signal block_ended
+signal block_ended 
 
 # --- Grapple ---
 signal grapple_fired(target_type: String)
@@ -42,12 +42,11 @@ signal grapple_finished
 
 # --- Trauma ---
 signal enemy_trauma_changed(enemy: Node, ratio: float)
-signal enemy_staggered(enemy: Node)     ## Entrée en Cristallisation Rouge (100% Trauma).
+signal enemy_staggered(enemy: Node)
 signal enemy_stagger_ended(enemy: Node)
 
 # --- Glory Kills ---
-signal glory_kill_available(enemy: Node)   ## Un ennemi staggeré est à portée d'exécution.
+signal glory_kill_available(enemy: Node)
 signal glory_kill_unavailable
-signal quick_extraction_performed(enemy: Node, healed_amount: float)
-signal full_glory_kill_started(enemy: Node)
-signal full_glory_kill_finished(enemy: Node)
+signal glory_kill_started(enemy: Node)
+signal glory_kill_finished(enemy: Node)

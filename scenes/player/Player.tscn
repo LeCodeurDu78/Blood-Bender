@@ -8,7 +8,9 @@
 [ext_resource type="PackedScene" path="res://scenes/weapons/DualBlades.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/Scythe.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/projectiles/BloodProjectile.tscn" id="8"]
-[ext_resource type="Script" uid="uid://bkakkg8thisc2" path="res://scripts/player/GrappleComponent.gd" id="10_grapple"]
+[ext_resource type="Script" uid="uid://bxihcj3jy652w" path="res://scripts/player/ShieldComponent.gd" id="9_shield"]
+[ext_resource type="Script" path="res://scripts/player/GrappleComponent.gd" id="10_grapple"]
+[ext_resource type="Script" uid="uid://dt87lquhh7o2j" path="res://scripts/player/PlayerHurtboxComponent.gd" id="11_hurtbox"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.4
@@ -38,9 +40,16 @@ weapon_scenes = Array[PackedScene]([ExtResource("4"), ExtResource("5"), ExtResou
 script = ExtResource("2")
 is_player_health = true
 
-[node name="GrappleComponent" type="Node3D" parent="." unique_id=319308885]
+[node name="ShieldComponent" type="Node3D" parent="." unique_id=418250479]
+script = ExtResource("9_shield")
+
+[node name="GrappleComponent" type="Node3D" parent="." unique_id=1394422863]
 script = ExtResource("10_grapple")
-travel_speed = 25.0
-travel_duration = 2.0
-enemy_pull_speed = 25.0
-enemy_pull_duration = 2.0
+
+[node name="HurtboxComponent" type="Area3D" parent="." unique_id=492442084]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("11_hurtbox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent" unique_id=614580106]
+shape = SubResource("CapsuleShape3D_player")

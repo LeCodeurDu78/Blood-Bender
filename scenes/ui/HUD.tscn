@@ -36,6 +36,53 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.7, 0, 0.05, 0)
 
+[node name="ParryFlash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1.0, 0.85, 0.4, 0)
+
+[node name="BlockPanel" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -70.0
+offset_top = 24.0
+offset_right = 70.0
+offset_bottom = 50.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.6, 0.75, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "BLOCAGE D'URGENCE"
+horizontal_alignment = 1
+
+[node name="GloryKillPrompt" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = 40.0
+offset_right = 90.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.1, 0.15, 1)
+theme_override_font_sizes/font_size = 18
+text = "F : EXÉCUTER"
+horizontal_alignment = 1
+
 [node name="BloodPanel" type="VBoxContainer" parent="." unique_id=1467195628]
 layout_mode = 1
 anchors_preset = 2

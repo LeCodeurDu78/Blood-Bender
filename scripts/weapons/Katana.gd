@@ -1,19 +1,12 @@
 extends WeaponBase
 class_name Katana
 
-## ============================================================
-## Katana.gd
-## ============================================================
 
-## Portée du coup de lame (mètres) — bien plus courte que weapon_range.
 @export var melee_range: float = 2.5
 
 @export_group("Extraction — Estoc Chirurgical")
-## Portée de l'estoc (légèrement supérieure au coup de lame standard).
 @export var extraction_range: float = 3.0
-## Multiplicateur de dégâts de l'estoc par rapport à base_damage.
 @export var extraction_damage_multiplier: float = 1.6
-## Vol de vie (PV) si l'estoc touche un point faible (coup critique).
 @export var extraction_weak_point_heal_min: float = 15.0
 @export var extraction_weak_point_heal_max: float = 25.0
 
@@ -26,8 +19,6 @@ func _ready() -> void:
 	fire_cooldown = 0.25
 	melee_range = 2.5
 
-	# L'estoc est une action délibérée : un clic droit = un coup, pas de
-	# spam en maintenant le bouton (contrairement aux coups de lame normaux).
 	extraction_cooldown = 0.5
 	extraction_ammo_cost = 0
 	extraction_blood_cost = 0.0
@@ -37,8 +28,6 @@ func _ready() -> void:
 	super._ready()
 
 
-## Surcharge complète : on court-circuite l'économie munitions/sang
-## de la classe parente. Un coup de Katana est toujours gratuit.
 func shoot() -> bool:
 	if _fire_timer > 0.0:
 		return false
@@ -56,15 +45,9 @@ func _on_shoot_effect() -> void:
 
 
 func _perform_melee_hit() -> void:
-	# Coup de lame : hitscan de très courte portée (melee_range) appliquant
-	# base_damage à la première HurtboxComponent touchée. Suffisant pour
-	# un Fast-FPS (pas besoin de hitbox physique à balayage pour la Phase 3).
 	_hitscan(base_damage, melee_range)
 
 
-## Extraction (clic droit) : Estoc chirurgical, entièrement gratuit
-## comme le coup de lame standard (surcharge complète, cohérent avec
-## la philosophie "Katana = illimité" de la classe).
 func extraction() -> bool:
 	if _extraction_timer > 0.0:
 		return false
@@ -85,9 +68,7 @@ func _perform_extraction_thrust() -> void:
 		var heal: float = randf_range(extraction_weak_point_heal_min, extraction_weak_point_heal_max)
 		if health_component != null:
 			health_component.heal_blood(heal)
-		# TODO (Phase 3 - VFX) : flash critique + son distinct pour le coup sur point faible.
 
 
-## Attaque automatique instantanée déclenchée lors du Morph vers la Katana.
 func perform_morph_attack() -> void:
 	_perform_melee_hit()

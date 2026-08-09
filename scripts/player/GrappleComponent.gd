@@ -15,10 +15,9 @@ class_name GrappleComponent
 @export var enemy_pull_speed: float = 18.0
 @export var enemy_pull_duration: float = 0.4
 
-var health_component : HealthComponent
-var camera           : Camera3D 
-
-@onready var player: Node3D = get_parent() as Node3D
+var health_component: HealthComponent
+var camera: Camera3D
+var player: Node3D
 
 # --- État interne : trajet du JOUEUR (décor ou ennemi lourd) ---
 var is_active: bool = false
@@ -31,22 +30,27 @@ var _pulled_enemy: Node3D = null
 var _pulled_enemy_hurtbox: HurtboxComponent = null
 var _pull_timer: float = 0.0
 
-func set_camera(cam):
-	camera = cam
 
-func set_health_component(hc):
+func set_health_component(hc: HealthComponent) -> void:
 	health_component = hc
 
+
+func set_camera(cam: Camera3D) -> void:
+	camera = cam
+
+
+func set_player(p: Node3D) -> void:
+	player = p
+
+
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("grapple"):
+	if Input.is_action_just_pressed("grapple_hook"):
 		_try_fire()
 
 	if _is_pulling_enemy:
 		_process_enemy_pull(delta)
 
 
-## Tente de déclencher le grappin : vérifie le coût en sang, effectue
-## le raycast de détection, et démarre le comportement adapté à la cible.
 func _try_fire() -> void:
 	if is_active or _is_pulling_enemy:
 		return  # Un grappin est déjà en cours.
@@ -90,7 +94,7 @@ func _resolve_target(result: Dictionary) -> void:
 		var hurtbox: HurtboxComponent = collider
 		var enemy: Node3D = hurtbox.get_parent() as Node3D
 
-		if enemy != null and "weight_class" in enemy:
+		if enemy != null and enemy.has_method("is_executable") and "weight_class" in enemy:
 			if enemy.weight_class == DummyEnemy.EnemyWeightClass.HEAVY:
 				_start_player_travel(enemy.global_transform.origin, "enemy_heavy")
 				EventBus.grapple_hit.emit("enemy_heavy", enemy)
@@ -100,12 +104,9 @@ func _resolve_target(result: Dictionary) -> void:
 				EventBus.grapple_hit.emit("enemy_light", enemy)
 				return
 
-	# Cas 2 : décor (mur/sol/plafond) -> le joueur est projeté vers le point d'impact.
 	_start_player_travel(hit_position, "world")
 	EventBus.grapple_hit.emit("world", null)
 
-
-## --- Trajet du joueur (ancrage décor OU ennemi lourd) ---
 
 func _start_player_travel(target: Vector3, target_type: String) -> void:
 	is_active = true
@@ -114,9 +115,6 @@ func _start_player_travel(target: Vector3, target_type: String) -> void:
 	EventBus.grapple_fired.emit(target_type)
 
 
-## Appelé par Player.gd à chaque _physics_process tant que `is_active`
-## est vrai. Retourne la vélocité à appliquer ce frame, et met à jour
-## l'état interne (fin de trajet automatique à l'arrivée ou au timeout).
 func get_travel_velocity(delta: float, current_position: Vector3) -> Vector3:
 	if not is_active:
 		return Vector3.ZERO
@@ -134,8 +132,6 @@ func get_travel_velocity(delta: float, current_position: Vector3) -> Vector3:
 	return to_target.normalized() * travel_speed
 
 
-## --- Traction d'un ennemi léger vers le joueur ---
-
 func _start_enemy_pull(enemy: Node3D, hurtbox: HurtboxComponent) -> void:
 	_is_pulling_enemy = true
 	_pulled_enemy = enemy
@@ -144,13 +140,6 @@ func _start_enemy_pull(enemy: Node3D, hurtbox: HurtboxComponent) -> void:
 	EventBus.grapple_fired.emit("enemy_light")
 
 
-## NOTE (Phase 3 - IA/Physique) : `DummyEnemy` est actuellement un
-## StaticBody3D immobile (cf. TODO similaire dans HurtboxComponent
-## pour le knockback). On déplace ici directement `global_transform`
-## plutôt que d'appliquer une vélocité physique, ce qui fonctionne pour
-## un mannequin sans logique de collision dynamique propre. À remplacer
-## par un déplacement CharacterBody3D/RigidBody3D réel une fois les
-## ennemis dotés d'un vrai corps physique mobile.
 func _process_enemy_pull(delta: float) -> void:
 	if _pulled_enemy == null or not is_instance_valid(_pulled_enemy) or player == null:
 		_end_enemy_pull()
@@ -166,13 +155,9 @@ func _process_enemy_pull(delta: float) -> void:
 		return
 
 	var step: Vector3 = to_player.normalized() * enemy_pull_speed * delta
-	# On ne dépasse jamais la distance restante, pour éviter que
-	# l'ennemi ne traverse le joueur en un seul frame (léger pas de
-	# temps + vitesse élevée).
 	if step.length() > distance:
 		step = to_player
 
-	
 	_pulled_enemy.global_transform.origin += step
 
 
