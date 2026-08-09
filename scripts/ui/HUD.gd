@@ -8,6 +8,11 @@ class_name HUD
 ## de l'arme équipée (bas-droite) + flash plein écran quand le
 ## joueur perd du sang (Dash, dégâts, tir "à sang"...).
 ##
+## PHASE 1 : ajout du retour visuel pour le tir secondaire
+## ("Extraction" refusé -> même flash rouge que munitions/morph
+## refusés) et une jauge de charge pour le Projectile Sanguin Direct
+## (visible uniquement pendant la charge, touche R / clic molette).
+##
 ## Écoute exclusivement l'EventBus : aucune référence directe au
 ## Player/HealthComponent/WeaponManager n'est requise.
 ## ============================================================
@@ -17,6 +22,8 @@ class_name HUD
 @onready var blood_label: Label = $BloodPanel/BloodLabel
 @onready var weapon_label: Label = $WeaponPanel/WeaponLabel
 @onready var ammo_label: Label = $WeaponPanel/AmmoLabel
+@onready var charge_panel: VBoxContainer = $ChargePanel
+@onready var charge_bar: ProgressBar = $ChargePanel/ChargeBar
 
 const COLOR_NORMAL_AMMO: Color = Color(1, 0.95, 0.9, 1)
 const COLOR_BLOOD_AMMO: Color = Color(0.9, 0.1, 0.15, 1)
@@ -36,6 +43,10 @@ func _ready() -> void:
 	EventBus.ammo_changed.connect(_on_ammo_changed)
 	EventBus.morph_failed.connect(_on_morph_failed)
 	EventBus.shot_failed.connect(_on_shot_failed)
+	EventBus.extraction_failed.connect(_on_extraction_failed)
+	EventBus.projectile_charging.connect(_on_projectile_charging)
+	EventBus.projectile_fired.connect(_on_projectile_fired)
+	EventBus.projectile_failed.connect(_on_projectile_failed)
 
 
 func _on_health_changed(current: float, maximum: float) -> void:
@@ -79,6 +90,28 @@ func _on_morph_failed(_weapon_name: String, _required_blood: float) -> void:
 
 
 func _on_shot_failed(_weapon_name: String) -> void:
+	_flash_denied()
+
+
+func _on_extraction_failed(_weapon_name: String) -> void:
+	_flash_denied()
+
+
+## Affiche/actualise la jauge de charge pendant que la touche
+## "projectile" (R / clic molette) est maintenue.
+func _on_projectile_charging(ratio: float) -> void:
+	charge_panel.visible = true
+	charge_bar.value = ratio * 100.0
+
+
+func _on_projectile_fired(_blood_cost: float, _damage: float) -> void:
+	charge_panel.visible = false
+	charge_bar.value = 0.0
+
+
+func _on_projectile_failed(_required_blood: float) -> void:
+	charge_panel.visible = false
+	charge_bar.value = 0.0
 	_flash_denied()
 
 

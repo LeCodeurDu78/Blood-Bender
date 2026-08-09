@@ -63,6 +63,31 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "100 / 100"
 
+[node name="ChargePanel" type="VBoxContainer" parent="." unique_id=3001122334]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -90.0
+offset_right = 90.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="ChargeBar" type="ProgressBar" parent="ChargePanel" unique_id=3001122335]
+custom_minimum_size = Vector2(180, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+max_value = 100.0
+value = 0.0
+show_percentage = false
+
 [node name="WeaponPanel" type="VBoxContainer" parent="." unique_id=1273234035]
 layout_mode = 1
 anchors_preset = 3

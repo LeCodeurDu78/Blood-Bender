@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://ktl7aieaxlts"]
 
-[ext_resource type="Script" uid="uid://cncnxqndveegc" path="res://scripts/weapons/Katana.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://ciy0dh2lchg8o" path="res://scenes/player/Player.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://xi4bw14xt271" path="res://scenes/ui/HUD.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/enemies/DummyEnemy.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://bmntb76ew2dtk" path="res://scenes/enemies/DummyEnemy.tscn" id="4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
 sky_top_color = Color(0.05, 0.02, 0.04, 1)
@@ -28,91 +27,86 @@ glow_bloom = 0.1
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
 size = Vector3(40, 1, 40)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grey"]
+albedo_color = Color(0.35, 0.32, 0.33, 1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(40, 1, 40)
 
 [sub_resource type="BoxMesh" id="BoxMesh_platform"]
 size = Vector3(4, 1, 4)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
-size = Vector3(4, 1, 4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grey"]
-albedo_color = Color(0.35, 0.32, 0.33, 1)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
 albedo_color = Color(0.45, 0.15, 0.18, 1)
 
-[node name="TestGreybox" type="Node3D"]
-script = ExtResource("1")
+[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
+size = Vector3(4, 1, 4)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="TestGreybox" type="Node3D" unique_id=20618045]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1482708432]
 environment = SubResource("Environment_main")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=782103279]
 transform = Transform3D(0.8, -0.3, 0.5, 0, 0.86, 0.5, -0.6, -0.4, 0.68, 0, 8, 0)
 light_energy = 1.1
 shadow_enabled = true
 
-[node name="Floor" type="StaticBody3D" parent="."]
-collision_layer = 1
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1111456752]
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1944514888]
 mesh = SubResource("BoxMesh_floor")
 surface_material_override/0 = SubResource("StandardMaterial3D_grey")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=807308178]
 shape = SubResource("BoxShape3D_floor")
 
-[node name="Platform1" type="StaticBody3D" parent="."]
+[node name="Platform1" type="StaticBody3D" parent="." unique_id=339686326]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -4)
-collision_layer = 1
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform1" unique_id=1680215878]
 mesh = SubResource("BoxMesh_platform")
 surface_material_override/0 = SubResource("StandardMaterial3D_platform")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform1" unique_id=251945003]
 shape = SubResource("BoxShape3D_platform")
 
-[node name="Platform2" type="StaticBody3D" parent="."]
+[node name="Platform2" type="StaticBody3D" parent="." unique_id=729802599]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2.5, -8)
-collision_layer = 1
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform2" unique_id=1857776382]
 mesh = SubResource("BoxMesh_platform")
 surface_material_override/0 = SubResource("StandardMaterial3D_platform")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform2" unique_id=1016276603]
 shape = SubResource("BoxShape3D_platform")
 
-[node name="Platform3" type="StaticBody3D" parent="."]
+[node name="Platform3" type="StaticBody3D" parent="." unique_id=1284635243]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.5, 6)
-collision_layer = 1
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform3" unique_id=870950584]
 mesh = SubResource("BoxMesh_platform")
 surface_material_override/0 = SubResource("StandardMaterial3D_platform")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform3" unique_id=198395066]
 shape = SubResource("BoxShape3D_platform")
 
-[node name="Player" parent="." instance=ExtResource("2")]
+[node name="Player" parent="." unique_id=790782736 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="DummyEnemy1" parent="." instance=ExtResource("4")]
+[node name="DummyEnemy1" parent="." unique_id=1735355263 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -8)
 
-[node name="DummyEnemy2" parent="." instance=ExtResource("4")]
+[node name="DummyEnemy2" parent="." unique_id=322113134 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, -12)
 
-[node name="DummyEnemy3" parent="." instance=ExtResource("4")]
+[node name="DummyEnemy3" parent="." unique_id=183352090 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 3, -8)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2015344926]
 
-[node name="HUD" parent="CanvasLayer" instance=ExtResource("3")]
+[node name="HUD" parent="CanvasLayer" unique_id=546737966 instance=ExtResource("3")]

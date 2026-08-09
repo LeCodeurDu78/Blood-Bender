@@ -7,6 +7,13 @@ class_name Player
 ## Contrôleur Fast-FPS : déplacement, caméra souris, gravité,
 ## saut, et Dash de Phase Sanguine (consomme du sang via
 ## HealthComponent).
+##
+## PHASE 1 — Projectile Sanguin Direct (touche R / clic molette,
+## action "projectile") : maintenir la touche charge le tir (jusqu'à
+## `projectile_max_charge_time`), la relâcher le déclenche. Le coût
+## en Sang (10-25 PV) et les dégâts infligés augmentent avec la
+## charge. Géré ici plutôt que dans WeaponComponent car disponible
+## quelle que soit l'arme équipée (indépendant du deck d'armes).
 ## ============================================================
 
 # --- Déplacement ---
@@ -30,6 +37,23 @@ class_name Player
 @export var dash_duration: float = 0.18
 @export var dash_cooldown: float = 0.6
 
+# --- Projectile Sanguin Direct ---
+@export_group("Blood Projectile")
+## Scène du projectile (voir scenes/projectiles/BloodProjectile.tscn).
+@export var projectile_scene: PackedScene
+## Temps de maintien pour atteindre la charge maximale (secondes).
+@export var projectile_max_charge_time: float = 1.2
+## Coût en Sang à charge minimale (appui bref) / maximale (charge pleine).
+@export var projectile_min_blood_cost: float = 10.0
+@export var projectile_max_blood_cost: float = 25.0
+## Dégâts infligés à charge minimale / maximale.
+@export var projectile_min_damage: float = 25.0
+@export var projectile_max_damage: float = 70.0
+@export var projectile_speed: float = 40.0
+## Décalage de spawn devant la caméra, pour éviter que le projectile
+## naisse à l'intérieur du corps du joueur (auto-collision).
+@export var projectile_spawn_offset: float = 1.0
+
 # --- Nœuds enfants ---
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
@@ -44,6 +68,9 @@ var _is_dashing: bool = false
 var _dash_timer: float = 0.0
 var _dash_cooldown_timer: float = 0.0
 var _dash_direction: Vector3 = Vector3.ZERO
+
+var _is_charging_projectile: bool = false
+var _projectile_charge_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -79,6 +106,7 @@ func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
 	_handle_jump()
 	_handle_dash_input()
+	_handle_projectile_charge(delta)
 
 	if _is_dashing:
 		_process_dash(delta)
@@ -169,6 +197,75 @@ func _process_dash(delta: float) -> void:
 func _update_timers(delta: float) -> void:
 	if _dash_cooldown_timer > 0.0:
 		_dash_cooldown_timer -= delta
+
+
+# --- Projectile Sanguin Direct (touche R / clic molette) ---
+func _handle_projectile_charge(delta: float) -> void:
+	if Input.is_action_just_pressed("projectile"):
+		_is_charging_projectile = true
+		_projectile_charge_timer = 0.0
+		EventBus.projectile_charge_started.emit()
+
+	if _is_charging_projectile:
+		_projectile_charge_timer = min(_projectile_charge_timer + delta, projectile_max_charge_time)
+		var ratio: float = _projectile_charge_timer / projectile_max_charge_time
+		EventBus.projectile_charging.emit(ratio)
+
+	if Input.is_action_just_released("projectile") and _is_charging_projectile:
+		_fire_blood_projectile()
+		_is_charging_projectile = false
+		_projectile_charge_timer = 0.0
+
+
+## Calcule le coût en Sang et les dégâts selon la charge accumulée,
+## puis consomme le Sang (JAMAIS létal, cf. HealthComponent.consume_blood
+## avec allow_lethal = false par défaut) avant d'instancier le projectile.
+func _fire_blood_projectile() -> void:
+	var ratio: float = _projectile_charge_timer / projectile_max_charge_time
+	var blood_cost: float = lerp(projectile_min_blood_cost, projectile_max_blood_cost, ratio)
+
+	# can_afford() en amont pour un échec propre (pas de tentative de
+	# dépense qui pourrait tuer le joueur) et pour émettre le bon signal.
+	if health_component == null or not health_component.can_afford(blood_cost):
+		EventBus.projectile_failed.emit(blood_cost)
+		return
+
+	var success: bool = health_component.consume_blood(blood_cost)
+	if not success:
+		EventBus.projectile_failed.emit(blood_cost)
+		return
+
+	var damage: float = lerp(projectile_min_damage, projectile_max_damage, ratio)
+	_spawn_projectile(damage)
+	EventBus.projectile_fired.emit(blood_cost, damage)
+
+
+func _spawn_projectile(damage: float) -> void:
+	if projectile_scene == null:
+		push_warning("Player: aucune scène de projectile assignée (projectile_scene).")
+		return
+
+	var direction: Vector3 = -camera.global_transform.basis.z
+	var spawn_origin: Vector3 = camera.global_transform.origin + direction * projectile_spawn_offset
+
+	var projectile: Node3D = projectile_scene.instantiate()
+	get_tree().current_scene.add_child(projectile)
+	projectile.global_transform.origin = spawn_origin
+
+	if projectile.has_method("launch"):
+		projectile.launch(direction, projectile_speed, damage)
+
+
+## Utilisé par les Morph Attacks qui replacent le joueur dans l'espace
+## (ex: dash tranchant des Lames Doubles) : fait pivoter le corps du
+## joueur pour qu'il fasse face à `target_position` sur le plan
+## horizontal. Simplifié pour la Phase 1 (rotation instantanée, sans
+## interpolation) — à lisser avec un Tween en Phase 3 si besoin.
+func look_at_point(target_position: Vector3) -> void:
+	var flat_target: Vector3 = Vector3(target_position.x, global_transform.origin.y, target_position.z)
+	if flat_target.distance_to(global_transform.origin) < 0.01:
+		return
+	look_at(flat_target, Vector3.UP)
 
 
 # --- Mort ---

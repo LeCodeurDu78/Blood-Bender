@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/Scythe.gd" id="1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_scythe_shaft"]
+size = Vector3(0.05, 0.05, 1.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_scythe_blade"]
+size = Vector3(0.5, 0.03, 0.18)
+
+[node name="Scythe" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Shaft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.4, -0.5)
+mesh = SubResource("BoxMesh_scythe_shaft")
+
+[node name="Blade" type="MeshInstance3D" parent="Shaft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, -0.65)
+mesh = SubResource("BoxMesh_scythe_blade")

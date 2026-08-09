@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDD - SANGUINE : VAMPIRIC CORE</title>
+    <title>GDD Complet - Fast-FPS Metroidvania Sanguin</title>
     <style>
         :root {
-            --bg-color: #0d0d0f;
-            --card-bg: #16151a;
-            --card-border: #2a2832;
+            --bg-color: #0a0a0e;
+            --panel-bg: #12121a;
+            --panel-border: #232334;
             --accent-red: #ff2a4b;
-            --dark-red: #8b0000;
-            --text-main: #e0e0e0;
-            --text-muted: #a0a0a0;
-            --highlight: #ff4d6d;
+            --accent-crimson: #9e0c22;
+            --accent-gold: #ffb703;
+            --accent-cyan: #00f5d4;
+            --text-main: #e2e8f0;
+            --text-muted: #8e9aaf;
         }
 
         * {
@@ -23,160 +24,188 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 20px;
+            padding: 30px 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
         header {
+            background: linear-gradient(135deg, #2b040a 0%, #0a0a0e 100%);
+            border: 1px solid var(--accent-red);
+            border-radius: 12px;
+            padding: 40px 30px;
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(180deg, rgba(139, 0, 0, 0.2) 0%, rgba(13, 13, 15, 0) 100%);
-            border-bottom: 2px solid var(--dark-red);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(255, 42, 75, 0.25);
         }
 
         header h1 {
-            font-size: 2.8rem;
-            color: var(--accent-red);
+            font-size: 3rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px rgba(255, 42, 75, 0.4);
+            letter-spacing: 4px;
+            color: var(--accent-red);
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 42, 75, 0.6);
         }
 
         header p {
             font-size: 1.2rem;
             color: var(--text-muted);
-            margin-top: 10px;
+        }
+
+        .tag-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 42, 75, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        section {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-red);
+            margin: 20px 0 12px 0;
         }
 
         .grid-2 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
 
-        section {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        h2 {
-            color: var(--accent-red);
-            font-size: 1.6rem;
-            border-bottom: 1px solid var(--dark-red);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        h3 {
-            color: var(--highlight);
-            font-size: 1.2rem;
-            margin: 15px 0 10px 0;
-        }
-
-        ul, ol {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        strong {
-            color: #ffffff;
-        }
-
-        /* Identity Cards */
-        .info-card {
-            background: rgba(255, 255, 255, 0.02);
-            border-left: 4px solid var(--accent-red);
-            padding: 12px 15px;
-            margin-bottom: 10px;
-        }
-
-        /* Diagrams */
-        .diagram {
-            background-color: #08080a;
-            border: 1px dashed var(--dark-red);
             padding: 20px;
-            border-radius: 6px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            color: #ff8093;
-            overflow-x: auto;
-            margin: 15px 0;
+            transition: transform 0.2s, border-color 0.2s;
         }
 
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.95rem;
+        .card:hover {
+            border-color: var(--accent-red);
+            transform: translateY(-3px);
         }
 
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        th {
-            background-color: rgba(139, 0, 0, 0.3);
-            color: #ffffff;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        tr:hover {
-            background-color: rgba(255, 42, 75, 0.05);
-        }
-
-        /* Code Blocks */
-        pre {
-            background-color: #08080a;
-            border: 1px solid var(--card-border);
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Courier New', monospace;
-            color: #d4d4d4;
-            font-size: 0.9rem;
+        .card h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 10px;
         }
 
         .badge {
             display: inline-block;
             padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
-            background-color: var(--dark-red);
-            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .badge-cost { background: #5c1d24; color: #ff8b8b; }
+        .badge-buff { background: #1b4332; color: #72efdd; }
+        .badge-debuff { background: #4a1525; color: #ff758f; }
+        .badge-rule { background: #3d2b00; color: #ffb703; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        th {
+            background-color: rgba(255, 42, 75, 0.15);
+            color: var(--accent-red);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .flow-box {
+            background: #050508;
+            border-left: 4px solid var(--accent-red);
+            padding: 18px 20px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: #4ade80;
+            border-radius: 0 8px 8px 0;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: var(--accent-red);
+            font-weight: bold;
         }
 
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             color: var(--text-muted);
             font-size: 0.9rem;
-            border-top: 1px solid var(--card-border);
-            margin-top: 40px;
+            border-top: 1px solid var(--panel-border);
         }
     </style>
 </head>
@@ -185,244 +214,264 @@
 <div class="container">
 
     <header>
-        <h1>SANGUINE : VAMPIRIC CORE</h1>
-        <p>Game Design Document &bull; Fast-FPS Metroidvania 3D</p>
+        <h1>Game Design Document</h1>
+        <p>Fast-FPS 3D Metroidvania Exigeant — Système à Barre de Santé Unique</p>
+        <div class="tag-container">
+            <span class="tag">Metroidvania 3D</span>
+            <span class="tag">Fast-FPS Ultra-Nerveux</span>
+            <span class="tag">Blood-Control Mechanics</span>
+            <span class="tag">Hardcore Combat Loop</span>
+        </div>
     </header>
 
-    <!-- SECTION 1: FICHE D'IDENTITÉ -->
+    <!-- SECTION 1: CORE LOOP & BANQUE DE SANG -->
     <section>
-        <h2>1. Fiche d'Identité du Projet</h2>
-        <div class="grid-2">
-            <div>
-                <div class="info-card"><strong>Titre Provisoire :</strong> SANGUINE : VAMPIRIC CORE</div>
-                <div class="info-card"><strong>Genre :</strong> Fast-FPS Metroidvania 3D</div>
-                <div class="info-card"><strong>Perspective :</strong> Vue à la première personne (FPS)</div>
-            </div>
-            <div>
-                <div class="info-card"><strong>Public Cible :</strong> Joueurs d'ULTRAKILL, DOOM Eternal, Hades</div>
-                <div class="info-card"><strong>Moteur :</strong> Godot 4.7 (GDScript)</div>
-                <div class="info-card"><strong>Thématique :</strong> Biopunk / Horreur Gothique</div>
-            </div>
-        </div>
+        <h2>1. Identité & Économie de Sang (Hard Credit Limit)</h2>
+        <p>La santé (<strong>100 PV Max</strong>) est l'unique ressource du jeu. Elle remplace la mana, les munitions et l'endurance. Le système impose un contrôle strict de solde : <strong>le joueur ne peut pas dépenser du sang qu'il ne possède pas</strong>.</p>
         
-        <h3>Piliers de Gameplay</h3>
-        <ul>
-            <li><strong>Santé comme Ressource Unique :</strong> La santé est la monnaie universelle (vie, munitions de secours, transformations, magie).</li>
-            <li><strong>Guerre d'Attrition & Agressivité :</strong> Impossible de jouer la prudence ; la seule façon de survivre est de foncer au corps à corps.</li>
-            <li><strong>Invocations & Métamorphoses :</strong> Fluidité absolue entre le maniement d'armes vivantes et la maîtrise de familiers.</li>
-        </ul>
-    </section>
+        <div class="flow-box">
+[ SOLDE VITAL DE SANG (100 PV MAX) ]
+├── Actions d'Attaque / Switch / Dopage (Consomment des PV)
+├── Sécurité à 1 PV : Impossible de dépenser plus de PV que le solde actuel (Action bloquée)
+└── Reconstitution : Extractions, Glory Kills & Contres de Survie à 1 PV
+        </div>
 
-    <!-- SECTION 2: CORE LOOP -->
-    <section>
-        <h2>2. Core Loop (Boucle Principale)</h2>
-        <div class="diagram">
-                       ┌───────────────────────────────┐
-                       │    VOTRE RÉSERVE : SANG / PV  │
-                       └───────────────┬───────────────┘
-                                       │
-            ┌──────────────────────────┼──────────────────────────┐
-            ▼                          ▼                          ▼
-   [ DÉPENSE ACTIVE ]         [ UTILISATION TACTIQUE ]     [ TIR DE SECOURS ]
-  Morph Attack (-10 PV)        Invocations (-30% PV)       Munitions vides (-5 PV/tir)
-  Dash / Capacité (-5 PV)      Doping + Surcharge
-            │                          │                          │
-            └──────────────────────────┼─────────────────────────┘
-                                       ▼
-                       ┌───────────────────────────────┐
-                       │     RISQUE / SANTÉ CRITIQUE   │
-                       └───────────────┬───────────────┘
-                                       │
-            ┌──────────────────────────┴──────────────────────────┐
-            ▼                                                     ▼
-   [ EXTRACTION RAPIDE ]                                 [ GLORY KILL ]
-   Siphon continu sur dégâts                             Stagger 100% + Exécution
-   (+5 à +15 PV réguliers)                               (+80% à +100% PV Massif)
+        <div class="grid-3">
+            <div class="card">
+                <span class="badge badge-rule">Règle de Sécurité</span>
+                <h4>Sécurité à 1 PV</h4>
+                <p>Si le solde de PV est insuffisant pour payer une action (ex: 4 PV restants pour une Morph Attack de 5 PV), l'action est <strong>refusée</strong>. Le joueur ne peut pas se suicider accidentellement.</p>
+            </div>
+            <div class="card">
+                <span class="badge badge-cost">Tirs à Sec & Projectiles</span>
+                <h4>Munitions d'Urgence</h4>
+                <p>Si la réserve de base d'une arme est vide, chaque tir draine directement les PV. Un projectile sanguin direct (clic molette) consomme 10 à 25 PV selon la charge.</p>
+            </div>
+            <div class="card">
+                <span class="badge badge-buff">Recharge Passive</span>
+                <h4>Holster Recharge</h4>
+                <p>La réserve de munitions de base d'une arme ne se recharge que lorsqu'elle est rangée. Alterne les armes est nécessaire pour éviter les tirs à sec systématiques.</p>
+            </div>
         </div>
     </section>
 
-    <!-- SECTION 3: COMBAT & ARSENAL -->
+    <!-- SECTION 2: ARSENAL & MORPH ATTACKS -->
     <section>
-        <h2>3. Système de Combat & Arsenal</h2>
-        <p><strong>Perspective & Sensations :</strong> Caméra FPS réactive (FOV 100-110). Déplacements rapides avec saut aérien et <em>Dash de Phase Sanguine</em> (téléportation courte coûtant 5 PV avec i-frames).</p>
-        <p><strong>Morph Attacks :</strong> Passer d'une arme à une autre en plein combo déclenche une transformation instantanée qui coûte <span class="badge">-10 PV</span> mais inflige des dégâts lourds.</p>
+        <h2>2. Arsenal & Morph Attacks (4 Armes)</h2>
+        <p>Basculer d'une arme à l'autre déclenche une <strong>Morph Attack</strong> : une transition offensive violente coûtant <strong>5 PV</strong> (si le solde de PV le permet).</p>
 
         <table>
             <thead>
                 <tr>
                     <th>Arme</th>
                     <th>Style de Combat</th>
-                    <th>Mode d'Extraction (Siphon)</th>
-                    <th>Gestion des Munitions</th>
+                    <th>Mode Extraction (Vol de Santé)</th>
+                    <th>Morph Attack (Switch : -5 PV)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><strong>Katana Sanguin</strong></td>
-                    <td>Tranchant rapide, coups critiques</td>
-                    <td><strong>Siphon Précis :</strong> Toucher un point faible génère des orbes de sang.</td>
-                    <td>Mêlée (Surchauffe en cas de spam)</td>
+                    <td>Chirurgical / Précision</td>
+                    <td><strong>Tranchant Chirurgical :</strong> Estoc à mi-distance sur points faibles. Coup critique draine 15-25 PV à distance.</td>
+                    <td>Estoc projeté en avant perforant la cible initiale.</td>
                 </tr>
                 <tr>
                     <td><strong>Lames Doubles</strong></td>
-                    <td>Attaques hyper-rapides au CàC</td>
-                    <td><strong>Vampirisme :</strong> Vol de vie augmente avec la vitesse de combo.</td>
-                    <td>Mêlée pure (Illimité)</td>
+                    <td>Ultra-CàC / Pression</td>
+                    <td><strong>Découpe en Rafale :</strong> Vol de vie passif continu au CàC (1-2 PV par coup très rapide).</td>
+                    <td>Téléportation / Dash tranchant passant derrière l'ennemi le plus proche.</td>
                 </tr>
                 <tr>
                     <td><strong>Faux Hématique</strong></td>
-                    <td>Balayage lourd à large zone (AoE)</td>
-                    <td><strong>Harvest :</strong> Absorbe la vie de chaque cible touchée en zone.</td>
-                    <td>Mêlée lourde (Consomme PV sur coup chargé)</td>
+                    <td>Contrôle / Zone (AoE)</td>
+                    <td><strong>Balayage Fendeur :</strong> Attaque en cône à 180°. Plus il y a d'ennemis touchés, plus l'extraction est élevée.</td>
+                    <td>Grand moulinet circulaire balayant et repoussant tous les ennemis proches.</td>
                 </tr>
                 <tr>
-                    <td><strong>Fusil à Pompe</strong></td>
-                    <td>Dégâts massifs à courte portée</td>
-                    <td><strong>Percussion :</strong> Les impacts arrachent des fragments de chair au sol.</td>
-                    <td><strong>6 Cartouches.</strong> Une fois vide : <strong>12 PV/tir</strong>.</td>
+                    <td><strong>Fusil à Pompe Organique</strong></td>
+                    <td>Démolition / Burst</td>
+                    <td><strong>Éclats Réabsorbés :</strong> Plante des fragments osseux. Les rappeler draine la santé des cibles traversées.</td>
+                    <td>Décharge à impact projetant le joueur en arrière et sonnant la cible.</td>
                 </tr>
             </tbody>
         </table>
+    </section>
+
+    <!-- SECTION 3: OUTILS UTILITAIRES & PARADE TOTAL -->
+    <section>
+        <h2>3. Outils Utilitaires : Bouclier & Grappin</h2>
+        <p>Ces outils secondaires sont essentiels pour le combat tactique et la progression dans la carte du Metroidvania.</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h4>Le Bouclier (100% des Attaques Parables)</h4>
+                <ul>
+                    <li><strong class="highlight">Parade Parfaite :</strong> Timing exact déviant l'attaque et appliquant un <i>Stagger instantané</i> (Cristallisation rouge). 100% des attaques ennemies du jeu sont parables.</li>
+                    <li><strong class="highlight">Parade de Survie à 1 PV :</strong> Seule mécanique à coût zéro. Parer à 1 PV déclenche un Siphon de Survie (+15 à +20 PV) pour sortir le joueur de l'impasse sans munitions.</li>
+                    <li><strong class="highlight">Blocage d'Urgence :</strong> Absorbe les dégâts en maintenant la touche, mais draine 2 PV par seconde.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Le Grappin Sanguin</h4>
+                <ul>
+                    <li><strong class="highlight">Mobilité & Exploration :</strong> Consomme une faible fraction de sang pour s'agripper au décor ou atteindre des zones de la carte inaccessibles.</li>
+                    <li><strong class="highlight">Attraction d'Ennemi Léger :</strong> Tracte les ennemis vers le joueur pour enchaîner au CàC.</li>
+                    <li><strong class="highlight">Ancrage sur Ennemi Lourd :</strong> Projette le joueur vers le torse des cibles imposantes pour placer une Morph Attack à bout portant.</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
     <!-- SECTION 4: STAGGER & GLORY KILLS -->
     <section>
-        <h2>4. Mécaniques de Récolte : Stagger & Glory Kills</h2>
-        <h3>La Jauge de Rupture Hématique (Stagger Invisible)</h3>
-        <p>Chaque ennemi possède une jauge d'équilibre interne de 0 à 100 points, remplie par les tirs en point faible, les <em>Morph Attacks</em>, et les coups de Faux.</p>
-        <p>À 100%, l'ennemi se fige, émet un battement de cœur sonore et s'entoure d'une <strong>aura rouge vif pendant 3 secondes</strong>.</p>
+        <h2>4. Système de Stagger & Executions</h2>
+        <p>L'accumulation de dégâts ou une parade réussie fait entrer l'ennemi en état de <strong>Cristallisation rougeoyante (3s)</strong>.</p>
 
-        <h3>L'Exécution (Glory Kill)</h3>
-        <p>Si le joueur s'approche d'un ennemi étourdi et presse la touche d'attaque de mêlée :</p>
-        <ol>
-            <li>Animation FPS dynamique ultra-brutale (arrachage de cœur, décapitation).</li>
-            <li>Destruction immédiate de l'ennemi.</li>
-            <li><strong>Restauration de 100% de la barre de santé</strong> du joueur.</li>
-        </ol>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Décroissance Rapide du Trauma</h4>
+                <p>La jauge de Trauma d'un ennemi se remplit via les attaques standards et les Morph Attacks. Cependant, elle <strong>décroît très rapidement</strong> si le joueur interrompt la pression, forçant un style de jeu ultra-agressif.</p>
+            </div>
+            <div class="card">
+                <h4>Extraction vs Full Glory Kill</h4>
+                <ul>
+                    <li><strong class="highlight">Extraction Classique :</strong> Rapide, s'exécute en plein combo, restaure +15-20 PV sans arrêter le rythme.</li>
+                    <li><strong class="highlight">Full Glory Kill :</strong> Animation d'exécution style <i>Doom</i>. Accorde des I-Frames (invulnérabilité) et <span class="highlight">restaure 100% des PV</span>.</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-    <!-- SECTION 5: DOPING & CRASH -->
+    <!-- SECTION 5: ROUES DE DOPAGE & SANCTUAIRES -->
     <section>
-        <h2>5. Système de Doping & "Crash"</h2>
-        <p>L'ouverture de la Roue de Doping applique un <strong>ralenti temporel dynamique à 80%</strong> (20% du temps s'écoule). Chaque injection offre un avantage massif suivi d'un <strong>Crash (malus de contre-coup)</strong> obligatoire.</p>
+        <h2>5. Roue de Dopage & Sanctuaires de Repos</h2>
+        <p>Inspiré du système de fioles d'un Soullike/Metroidvania, le Dopage offre des boosts destructeurs mais aux ressources strictement limitées.</p>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Injection</th>
-                    <th>Effet Actif (6 sec)</th>
-                    <th>Effet Crash Post-Buff (4 sec)</th>
-                    <th>Cooldown</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Surcharge Cardiaque</strong></td>
-                    <td><strong>Bullet Time :</strong> Monde ralenti de 70%, joueur à vitesse normale.</td>
-                    <td><strong>Léthargie :</strong> Vitesse de déplacement du joueur réduite de 30%.</td>
-                    <td>15 sec</td>
-                </tr>
-                <tr>
-                    <td><strong>Coagulation de Fer</strong></td>
-                    <td><strong>Super-Armure :</strong> +70% résistance dégâts, immunité stun.</td>
-                    <td><strong>Hémophilie :</strong> -40% de défense (dégâts amplifiés).</td>
-                    <td>20 sec</td>
-                </tr>
-                <tr>
-                    <td><strong>Perfusion Adrénaline</strong></td>
-                    <td><strong>Pression de Sang :</strong> +60% de dégâts sur toutes les armes.</td>
-                    <td><strong>Anémie :</strong> Dégâts de toutes les armes réduits de 35%.</td>
-                    <td>18 sec</td>
-                </tr>
-                <tr>
-                    <td><strong>Hyper-Vascularisation</strong></td>
-                    <td><strong>Siphon Massif :</strong> Vol de vie doublé sur toutes les attaques.</td>
-                    <td><strong>Coagulation Sèche :</strong> Vol de vie totalement désactivé.</td>
-                    <td>25 sec</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- SECTION 6: FAMILIERS -->
-    <section>
-        <h2>6. Système de Familiers (Invocations)</h2>
-        <ul>
-            <li><strong>Coût :</strong> Paiement unique à l'invocation (25% à 40% des PV max).</li>
-            <li><strong>Mort & Repos :</strong> Si un familier meurt, sa marque est grisée. Le joueur <strong>doit se reposer à un Autel de Sang</strong> pour le réinvoquer.</li>
-            <li><strong>Ordres Ciblés :</strong> Possibilité de cibler un ennemi pour déclencher la compétence spéciale du familier.</li>
-        </ul>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Familier</th>
-                    <th>Rôle & Action Autonome</th>
-                    <th>Ordre Spécial (Action Ciblée)</th>
-                    <th>Coût PV</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Le Traqueur (Loup)</strong></td>
-                    <td>Attaque les ennemis légers</td>
-                    <td>Immobilise une cible et lui extrait du sang à distance</td>
-                    <td>25 PV</td>
-                </tr>
-                <tr>
-                    <td><strong>Le Colosse Hématique</strong></td>
-                    <td>Attire l'attention des lourds</td>
-                    <td>Charge en ligne droite et brise la garde ennemie</td>
-                    <td>40 PV</td>
-                </tr>
-                <tr>
-                    <td><strong>L'Ombre Miroir</strong></td>
-                    <td>Reproduit les tirs (décalage 0.5s)</td>
-                    <td>Se téléporte sur la cible et explose en nuage de sang</td>
-                    <td>35 PV</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- SECTION 7: METROIDVANIA -->
-    <section>
-        <h2>7. Structure Metroidvania & Progression</h2>
-        <p>Monde 3D ouvert et interconnecté. Progression bloquée par des obstacles environnementaux franchissables via des <strong>Capacités Sanguines</strong>.</p>
-
-        <div class="diagram">
-                           ┌────────────────────────┐
-                           │   CATHÉDRALE CENTRALE  │
-                           └───────────┬────────────┘
-                                       │
-            ┌──────────────────────────┼──────────────────────────┐
-            ▼                          ▼                          ▼
-   [ SECTEUR : DÉRIVATIONS ]   [ SECTEUR : CATACOMBES ]   [ SECTEUR : LABORATOIRES ]
-   Obstacle : Portes de Chair  Obstacle : Grilles         Obstacle : Gouffres
-   Requis : Colosse Sanguin    Requis : Phase Dash        Requis : Grappin 
+        <div class="flow-box">
+[ ACTIVATION DU DOPAGE ]
+Coût : 20 PV + 1 Charge de Sérum ──► Slow-Mo (80-90%) ──► Boost (5s) ──► Post-Crash (10s)
+* Les Charges de Sérum ne se rechargent QUE dans un Sanctuaire de Repos.
         </div>
 
-        <h3>Capacités de Progression (Gating)</h3>
+        <div class="grid-2" style="margin-bottom:20px;">
+            <div class="card">
+                <h4>Gestion des Charges de Sérum</h4>
+                <p>Le joueur commence avec <strong>2 Charges Max</strong>. Utiliser le dopage consomme 1 Charge. Le seul moyen de recharger les fioles est de s'asseoir à un <strong>Sanctuaire de Repos</strong> (qui réinitialise aussi les ennemis de la zone).</p>
+            </div>
+            <div class="card">
+                <h4>Progression Metroidvania</h4>
+                <p>L'exploration de zones cachées permet de trouver des <i>Injecteurs d'Expansion</i> (pour monter jusqu'à 5-6 charges max) et des améliorations de laboratoire pour réduire la durée des contrecoups.</p>
+            </div>
+        </div>
+
+        <div class="grid-4">
+            <div class="card">
+                <h4>Adrénaline Hématique</h4>
+                <span class="badge badge-buff">Boost (5s)</span> Vitesse +60%, CD tir annulé, cadence +50%.<br>
+                <span class="badge badge-debuff">Crash (10s)</span> Vitesse -40%, coût switch doublé (10 PV).
+            </div>
+            <div class="card">
+                <h4>Coagulant de Fer</h4>
+                <span class="badge badge-buff">Boost (5s)</span> Résistance dégâts +80%, immunité knockback.<br>
+                <span class="badge badge-debuff">Crash (10s)</span> Dégâts subis +50%, parades impossibles.
+            </div>
+            <div class="card">
+                <h4>Sérotonine BERSERK</h4>
+                <span class="badge badge-buff">Boost (5s)</span> Dégâts CàC et extractions x3 + ondes de choc.<br>
+                <span class="badge badge-debuff">Crash (10s)</span> Saignement passif (-2 PV/s), visuel flou.
+            </div>
+            <div class="card">
+                <h4>Hyper-Pression</h4>
+                <span class="badge badge-buff">Boost (5s)</span> Ralenti temporel étendu au monde réel.<br>
+                <span class="badge badge-debuff">Crash (10s)</span> Actions du joueur ralenties de 30%.
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: STRUCTURE METROIDVANIA & ENNEMIS -->
+    <section>
+        <h2>6. Structure du Monde, Ennemis & Lisibilité Visuelle</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h4>Metroidvania 3D Moderne</h4>
+                <p>Un monde interconnecté avec 4 à 5 grandes régions (Catacombes, Laboratoires, Citadelle). L'accès aux nouvelles zones se fait via le déblocage progressif des capacités (Grappin, Bouclier, Armes).</p>
+            </div>
+            <div class="card">
+                <h4>Pas d'Ennemis "Fodder"</h4>
+                <p>Chaque ennemi est exigeant. Les arènes contiennent une <strong>dizaine d'ennemis simultanés</strong> maximum, exigeant un calcul méthodique de chaque prise de risque.</p>
+            </div>
+            <div class="card">
+                <h4>Lisibilité & Télégraphes</h4>
+                <p>Pour contrer le chaos visuel du sang, les attaques ennemies émettent un <strong>flash lumineux blanc/jaune brillant</strong> indiquant le timing exact de la parade.</p>
+            </div>
+        </div>
+
+        <h3>Feedback de Santé Critique (&lt; 20 PV)</h3>
+        <p>Passer sous la barre des 20 PV altère instantanément l'environnement sensoriel :</p>
         <ul>
-            <li><strong>Grappin d'Hémoglobine :</strong> S'agrippe aux tendons flottants pour franchir les gouffres.</li>
-            <li><strong>Dash de Phase :</strong> Traverse les grilles et barrières énergétiques.</li>
-            <li><strong>Frappe de Colosse :</strong> Le Colosse brise les parois de chair pétrifiée.</li>
-            <li><strong>Autels de Sang :</strong> Checkpoints réinitialisant la zone et rechargeant les invocations.</li>
+            <li><strong class="highlight">Visuel :</strong> Le monde passe en <strong>Noir et Blanc</strong> désaturé. Seuls le sang et les éclats de parade restent en couleur écarlate/jaune.</li>
+            <li><strong class="highlight">Audio :</strong> Atténuation des bruits ambiants, son focalisé sur une <strong>respiration haletante</strong> et des <strong>battements de cœur frénétiques</strong>.</li>
         </ul>
     </section>
 
-    <!-- SECTION 8: DA & AUDIO -->
+    <!-- SECTION 7: MAPPAGE DES TOUCHES -->
     <section>
-        <h2>8. Direction Artistique & Audio</h2>
-        <ul>
-            <li><strong>Style Visuel :</strong> Biopunk / Horreur Gothique Moderne. Mélange de pierre sombre et de tuyauterie d'organes vivants.</li>
-            <li><strong>Palette de Couleurs :</strong> Dominante de noirs, gris gothiques et rouges sang chauds. Éléments interactifs en sang fluorescent.</li>
-            <li><strong>UI / HUD Minimaliste :</strong> Barre de vie matérialisée par un cœur organique qui bat plus vite à mesure que la santé diminue.</li>
-        </ul>
+        <h2>7. Mappage des Touches (PC & Manette)</h2>
+
+        <h3>Configuration Clavier & Souris (PC)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Touche Clavier</th>
+                    <th>Bouton Souris</th>
+                    <th>Notes Technique</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Déplacement</td><td><strong>Z, Q, S, D</strong></td><td>—</td><td>Mouvements multidirectionnels.</td></tr>
+                <tr><td>Saut / Double Saut</td><td><strong>Espace</strong></td><td>—</td><td>Verticalité.</td></tr>
+                <tr><td>Dash / Rupture</td><td><strong>Shift Gauche</strong></td><td>—</td><td>Esquive rapide.</td></tr>
+                <tr><td>Attaque Principale</td><td>—</td><td><strong>Clic Gauche</strong></td><td>Tir / Coup standard.</td></tr>
+                <tr><td>Extraction (Vol de santé)</td><td>—</td><td><strong>Clic Droit</strong></td><td>Capacité d'extraction de l'arme.</td></tr>
+                <tr><td>Bouclier / Parade</td><td><strong>A</strong></td><td><strong>Bouton Latéral 1</strong></td><td>Parade parfaite (timing) ou Blocage.</td></tr>
+                <tr><td>Grappin</td><td><strong>E</strong></td><td><strong>Bouton Latéral 2</strong></td><td>Mobilité / Ancrage (Consomme PV).</td></tr>
+                <tr><td>Morph Attack (Switch)</td><td><strong>1, 2, 3, 4</strong></td><td><strong>Molette</strong></td><td>Changement d'arme (-5 PV).</td></tr>
+                <tr><td>Projectile Sanguin</td><td><strong>R</strong></td><td><strong>Clic Molette</strong></td><td>Attaque à distance directe (-10 à 25 PV).</td></tr>
+                <tr><td>Glory Kill (Exécution)</td><td><strong>F</strong></td><td>—</td><td>Exécution sur cible Stagger (+100% PV).</td></tr>
+                <tr><td>Roue de Dopage / Slow-Mo</td><td><strong>Tab (Maintenir)</strong></td><td>—</td><td>Ralenti temporel (Consomme 20 PV + 1 Charge).</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Configuration Manette (Xbox / PlayStation)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Manette Xbox</th>
+                    <th>DualSense (PlayStation)</th>
+                    <th>Mécanique Ergo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Déplacement / Caméra</td><td>Sticks Gauche / Droit</td><td>Sticks Gauche / Droit</td><td>Contrôle standard.</td></tr>
+                <tr><td>Attaque Principale</td><td><strong>RT</strong></td><td><strong>R2</strong></td><td>Gâchette basse droite.</td></tr>
+                <tr><td>Extraction (Vol de santé)</td><td><strong>RB</strong></td><td><strong>R1</strong></td><td>Gâchette haute droite.</td></tr>
+                <tr><td>Bouclier / Parade</td><td><strong>LT</strong></td><td><strong>L2</strong></td><td>Gâchette basse gauche.</td></tr>
+                <tr><td>Grappin</td><td><strong>LB</strong></td><td><strong>L1</strong></td><td>Gâchette haute gauche.</td></tr>
+                <tr><td>Saut / Dash</td><td><strong>A / B</strong></td><td><strong>Croix / Rond</strong></td><td>Boutons d'action.</td></tr>
+                <tr><td>Morph Attack (Quick Swap)</td><td><strong>Y (Tap)</strong></td><td><strong>Triangle (Tap)</strong></td><td>Switch vers dernière arme (-5 PV).</td></tr>
+                <tr><td>Morph Attack (Roue Flash)</td><td><strong>Y (Maintenir) + Stick D</strong></td><td><strong>Triangle (Maintenir) + Stick D</strong></td><td>Roue directionnelle 4 armes (&lt;150ms).</td></tr>
+                <tr><td>Projectile Sanguin</td><td><strong>X</strong></td><td><strong>Carré</strong></td><td>Attaque à distance directe.</td></tr>
+                <tr><td>Glory Kill / Exécution</td><td><strong>R3 (Pression Stick Droit)</strong></td><td><strong>R3 (Pression Stick Droit)</strong></td><td>Sur cible en Stagger.</td></tr>
+                <tr><td>Roue de Dopage (Slow-Mo)</td><td><strong>Flèche Bas (Maintenir)</strong></td><td><strong>Flèche Bas (Maintenir)</strong></td><td>Sélection sérum.</td></tr>
+            </tbody>
+        </table>
     </section>
 
     <footer>
-        <p>SANGUINE : VAMPIRIC CORE &bull; Document de Design Interne &bull; Généré pour Godot 4.7</p>
+        <p>Document de Design de Jeu Révisé — Project Hemo-Rampage © 2026</p>
     </footer>
 
 </div>

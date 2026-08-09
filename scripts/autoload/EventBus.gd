@@ -12,6 +12,16 @@ signal shot_fired(weapon_name: String)
 signal shot_failed(weapon_name: String)
 signal morph_failed(weapon_name: String, required_blood: float)
 
+# --- Tir secondaire "Extraction" (Phase 1, relayé par WeaponBase) ---
+signal extraction_fired(weapon_name: String)
+signal extraction_failed(weapon_name: String)
+
+# --- Projectile Sanguin Direct (Phase 1, relayé par Player.gd) ---
+signal projectile_charge_started
+signal projectile_charging(ratio: float)
+signal projectile_fired(blood_cost: float, damage: float)
+signal projectile_failed(required_blood: float)
+
 # --- Combat (relayé par HurtboxComponent / DummyEnemy) ---
 signal entity_damaged(hurtbox: HurtboxComponent, amount: float, hit_position: Vector3)
 signal entity_died(entity: Node)

@@ -1,0 +1,200 @@
+{
+  "main": {
+    "id": "d139ed24d375060f",
+    "type": "split",
+    "children": [
+      {
+        "id": "47cfa3cdfab8cf99",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "616d872083324e7a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Bugs & Issues/Changer Systeme Attaque.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Changer Systeme Attaque"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "06c219077571be1b",
+    "type": "split",
+    "children": [
+      {
+        "id": "2bfd793b43389e46",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f3d5d5e7ac4fcf51",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "f5f9150ac8c93c8d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "3eaf1d84f68ddd7e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "8b23a63ce9de048d",
+    "type": "split",
+    "children": [
+      {
+        "id": "ec00d2e3a409977f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d8afefa97561ac59",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Bugs & Issues/Changer Systeme Attaque.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Changer Systeme Attaque"
+            }
+          },
+          {
+            "id": "60e80ce6f0efc2e1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Bugs & Issues/Changer Systeme Attaque.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Changer Systeme Attaque"
+            }
+          },
+          {
+            "id": "6bdcd94207c359c1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "d4f7a08b8971a721",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "11897adf2854503f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Bugs & Issues/Changer Systeme Attaque.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Changer Systeme Attaque"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "616d872083324e7a",
+  "lastOpenFiles": [
+    "Tableau de Bord/Roadmap.md",
+    "Bugs & Issues/Changer Systeme Attaque.md",
+    "Tableau de Bord/Dashboard.md",
+    "Templates",
+    "Untitled Folder",
+    "Journal de Dev",
+    "Bugs & Issues",
+    "Code & Architecture",
+    "Production & Taches",
+    "GDD & Design",
+    "Tableau de Bord"
+  ]
+}

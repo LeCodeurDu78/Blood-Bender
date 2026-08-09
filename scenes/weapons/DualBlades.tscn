@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/DualBlades.gd" id="1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dualblade_left"]
+size = Vector3(0.04, 0.04, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dualblade_right"]
+size = Vector3(0.04, 0.04, 0.6)
+
+[node name="DualBlades" type="Node3D"]
+script = ExtResource("1")
+
+[node name="BladeLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28, -0.32, -0.55)
+mesh = SubResource("BoxMesh_dualblade_left")
+
+[node name="BladeRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, -0.32, -0.55)
+mesh = SubResource("BoxMesh_dualblade_right")
