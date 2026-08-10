@@ -1,1 +1,0 @@
-Ajouter un crosshair pour le fusil a pompe et le projectile 

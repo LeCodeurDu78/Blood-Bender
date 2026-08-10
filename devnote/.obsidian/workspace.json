@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Bugs & Issues/Crosshair.md",
+                "file": "Bugs & Issues/Systeme d'attaque.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Crosshair"
+              "title": "Systeme d'attaque"
             }
           }
         ]
@@ -187,8 +187,8 @@
   },
   "active": "616d872083324e7a",
   "lastOpenFiles": [
-    "Bugs & Issues/Systeme d'attaque.md",
     "Bugs & Issues/Crosshair.md",
+    "Bugs & Issues/Systeme d'attaque.md",
     "Tableau de Bord/Roadmap.md",
     "Tableau de Bord/Dashboard.md",
     "Templates",

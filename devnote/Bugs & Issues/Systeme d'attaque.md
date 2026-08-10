@@ -1,2 +1,2 @@
-ajouter des animations et peaufiner
+Modifier completement le systeme d'attaque 
 

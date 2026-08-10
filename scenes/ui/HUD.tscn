@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://xi4bw14xt271"]
 
 [ext_resource type="Script" uid="uid://bndvkbf8kgv8s" path="res://scripts/ui/HUD.gd" id="1"]
+[ext_resource type="Script" uid="uid://e666pnxvbrot" path="res://addons/ultimate_crosshairs/UltimateCrosshairs.gd" id="2_atyv1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.05, 0.02, 0.02, 0.55)
@@ -36,7 +37,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.7, 0, 0.05, 0)
 
-[node name="ParryFlash" type="ColorRect" parent="."]
+[node name="ParryFlash" type="ColorRect" parent="." unique_id=1786056078]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,9 +45,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(1.0, 0.85, 0.4, 0)
+color = Color(1, 0.85, 0.4, 0)
 
-[node name="BlockPanel" type="Label" parent="."]
+[node name="BlockPanel" type="Label" parent="." unique_id=330194654]
 visible = false
 layout_mode = 1
 anchors_preset = 5
@@ -57,13 +58,12 @@ offset_top = 24.0
 offset_right = 70.0
 offset_bottom = 50.0
 grow_horizontal = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.6, 0.75, 1, 1)
 theme_override_font_sizes/font_size = 16
 text = "BLOCAGE D'URGENCE"
 horizontal_alignment = 1
 
-[node name="GloryKillPrompt" type="Label" parent="."]
+[node name="GloryKillPrompt" type="Label" parent="." unique_id=1071524919]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -77,7 +77,6 @@ offset_right = 90.0
 offset_bottom = 66.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.95, 0.1, 0.15, 1)
 theme_override_font_sizes/font_size = 18
 text = "F : EXÉCUTER"
@@ -110,10 +109,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "100 / 100"
 
-[node name="ChargePanel" type="VBoxContainer" parent="." unique_id=3001122334]
+[node name="ChargePanel" type="VBoxContainer" parent="." unique_id=-1293844962]
 visible = false
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -126,13 +125,11 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="ChargeBar" type="ProgressBar" parent="ChargePanel" unique_id=3001122335]
+[node name="ChargeBar" type="ProgressBar" parent="ChargePanel" unique_id=-1293844961]
 custom_minimum_size = Vector2(180, 10)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
-max_value = 100.0
-value = 0.0
 show_percentage = false
 
 [node name="WeaponPanel" type="VBoxContainer" parent="." unique_id=1273234035]
@@ -164,3 +161,17 @@ theme_override_colors/font_color = Color(1, 0.95, 0.9, 1)
 theme_override_font_sizes/font_size = 26
 text = "MELEE"
 horizontal_alignment = 2
+
+[node name="Crosshair" type="Control" parent="." unique_id=334427716]
+modulate = Color(1, 1, 1, 0.5294118)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_atyv1")
+style = 0
+foreground_color = Color(1, 0, 0, 1)
