@@ -40,6 +40,15 @@ signal grapple_failed(required_blood: float)
 signal grapple_hit(target_type: String, target: Node)
 signal grapple_finished
 
+# --- Doping (Roue de Sérums) ---
+signal doping_wheel_opened
+signal doping_wheel_closed
+signal doping_wheel_hover_changed(serum_name: String)
+signal doping_activated(serum_type: String, boost_duration: float)
+signal doping_boost_ended(serum_type: String)
+signal doping_crash_ended(serum_type: String)
+signal doping_denied(required_blood: float)
+
 # --- Trauma ---
 signal enemy_trauma_changed(enemy: Node, ratio: float)
 signal enemy_staggered(enemy: Node)

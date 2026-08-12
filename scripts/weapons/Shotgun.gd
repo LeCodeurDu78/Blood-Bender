@@ -20,6 +20,7 @@ func _ready() -> void:
 	extraction_blood_cost = 12.0
 	allow_held_fire = false
 	allow_held_extraction = false
+	is_melee = false
 
 	super._ready()
 
@@ -35,7 +36,7 @@ func _on_extraction_effect() -> void:
 		extraction_pierce_targets
 	)
 	if not hits.is_empty() and health_component != null:
-		health_component.heal_blood(extraction_drain_per_target * hits.size())
+		health_component.heal_blood(_apply_lifesteal(extraction_drain_per_target * hits.size()))
 
 
 func perform_morph_attack() -> void:

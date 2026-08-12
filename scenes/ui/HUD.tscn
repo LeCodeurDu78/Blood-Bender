@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bndvkbf8kgv8s" path="res://scripts/ui/HUD.gd" id="1"]
 [ext_resource type="Script" uid="uid://e666pnxvbrot" path="res://addons/ultimate_crosshairs/UltimateCrosshairs.gd" id="2_atyv1"]
+[ext_resource type="Script" path="res://scripts/ui/DopingUI.gd" id="3_doping"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.05, 0.02, 0.02, 0.55)
@@ -175,3 +176,33 @@ grow_vertical = 2
 script = ExtResource("2_atyv1")
 style = 0
 foreground_color = Color(1, 0, 0, 1)
+
+[node name="DopingWheel" type="Control" parent="." unique_id=847213659]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_doping")
+
+[node name="DopingStatusPanel" type="VBoxContainer" parent="." unique_id=1584720394]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 64.0
+offset_right = 110.0
+offset_bottom = 94.0
+grow_horizontal = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="DopingStatusLabel" type="Label" parent="DopingStatusPanel" unique_id=1584720395]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "ADRÉNALINE — BOOST"
+horizontal_alignment = 1

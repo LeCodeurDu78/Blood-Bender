@@ -53,7 +53,7 @@ func _perform_slash(damage: float, heal_multiplier: float) -> Dictionary:
 	var result: Dictionary = _hitscan(damage, melee_range)
 	if not result.is_empty() and health_component != null:
 		var heal: float = randf_range(lifesteal_min, lifesteal_max) * heal_multiplier
-		health_component.heal_blood(heal)
+		health_component.heal_blood(_apply_lifesteal(heal))
 	return result
 
 
@@ -83,7 +83,7 @@ func perform_morph_attack() -> void:
 
 	var heal: float = randf_range(lifesteal_min, lifesteal_max) * morph_lifesteal_multiplier
 	if health_component != null:
-		health_component.heal_blood(heal)
+		health_component.heal_blood(_apply_lifesteal(heal))
 
 	if player == null:
 		return

@@ -42,6 +42,7 @@ class_name Player
 @onready var weapon_component  : WeaponComponent         = $Head/Camera3D/WeaponComponent
 @onready var shield_component  : ShieldComponent         = $ShieldComponent
 @onready var grapple_component : GrappleComponent        = $GrappleComponent
+@onready var doping_component  : DopingManager           = $DopingManager
 @onready var hurtbox           : PlayerHurtboxComponent  = $HurtboxComponent
 
 
@@ -64,19 +65,24 @@ func _ready() -> void:
 	health_component.player_died.connect(_on_player_died)
 	
 	weapon_component.set_health_component(health_component)
+	weapon_component.set_doping_component(doping_component)
 
 	shield_component.set_health_component(health_component)
+	shield_component.set_doping_component(doping_component)
 
 	grapple_component.set_health_component(health_component)
 	grapple_component.set_camera(camera)
 	grapple_component.set_player(self)
 
+	doping_component.set_health_component(health_component)
+
 	hurtbox.health_component = health_component
 	hurtbox.shield_component = shield_component
+	hurtbox.doping_component = doping_component
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not _is_doping_wheel_open():
 		var motion: InputEventMouseMotion = event
 
 		rotate_y(-motion.relative.x * mouse_sensitivity)
@@ -112,7 +118,53 @@ func _physics_process(delta: float) -> void:
 	else:
 		_process_movement(delta)
 
+	_move_with_bullet_time_correction()
+
+
+func _is_doping_wheel_open() -> bool:
+	return doping_component != null and doping_component.is_wheel_open
+
+
+func _move_with_bullet_time_correction() -> void:
+	## Le Boost "Hyper-Pression" ralentit Engine.time_scale pour TOUT le
+	## monde (ennemis, projectiles, animations). On compense la vélocité du
+	## joueur UNIQUEMENT pour l'appel à move_and_slide() (qui déplace le
+	## joueur sur la durée réelle de la frame), puis on la ramène aussitôt
+	## à sa valeur "normale" avant de la stocker.
+	##
+	## IMPORTANT : `velocity` est un état persistant (accumulation de la
+	## gravité, base du move_toward de _process_movement). Le multiplier de
+	## façon permanente le ferait grossir de façon exponentielle frame après
+	## frame (chaque frame appliquerait la correction PAR-DESSUS la
+	## correction déjà stockée la frame précédente), jusqu'à dépasser les
+	## limites du float (NaN/Inf) — d'où le franchissement des murs et le
+	## crash "instance_set_transform". On ne scale donc jamais `velocity`
+	## de façon durable : seule la frame courante, au moment précis de
+	## l'appel à move_and_slide(), est affectée.
+	var correction: float = 1.0
+	if doping_component != null:
+		correction = doping_component.get_bullet_time_correction()
+
+	if correction == 1.0:
+		move_and_slide()
+		return
+
+	velocity *= correction
 	move_and_slide()
+	# Retour immédiat en espace "normal" : la gravité et les calculs de
+	# mouvement de la frame suivante repartent d'une base saine.
+	velocity /= correction
+	_sanitize_velocity()
+
+
+func _sanitize_velocity() -> void:
+	## Filet de sécurité : si un cumul de multiplicateurs (dopage, dash,
+	## etc.) produit un jour une vélocité non-finie (NaN/Inf), on la
+	## réinitialise plutôt que de laisser Godot planter sur
+	## instance_set_transform au frame suivant.
+	if not (is_finite(velocity.x) and is_finite(velocity.y) and is_finite(velocity.z)):
+		push_warning("Player: vélocité non-finie détectée, réinitialisation à zéro.")
+		velocity = Vector3.ZERO
 
 
 func _apply_gravity(delta: float) -> void:
@@ -129,7 +181,8 @@ func _process_movement(delta: float) -> void:
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction: Vector3 = (transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized()
 
-	var current_speed: float = walk_speed
+	var speed_multiplier: float = doping_component.get_speed_multiplier() if doping_component != null else 1.0
+	var current_speed: float = walk_speed * speed_multiplier
 	var accel: float = acceleration if is_on_floor() else air_acceleration
 
 	if direction != Vector3.ZERO:

@@ -13,6 +13,7 @@ class_name ShieldComponent
 @export var block_blood_cost_per_second: float = 2.0
 
 var health_component: HealthComponent
+var doping_component: DopingManager
 
 # --- État interne ---
 var _is_holding: bool = false
@@ -23,6 +24,10 @@ var _is_blocking: bool = false
 
 func set_health_component(hc: HealthComponent) -> void:
 	health_component = hc
+
+
+func set_doping_component(dm: DopingManager) -> void:
+	doping_component = dm
 
 
 func _process(delta: float) -> void:
@@ -48,6 +53,11 @@ func _handle_input(delta: float) -> void:
 
 
 func _start_hold() -> void:
+	# Coagulant de Fer (Crash) : parades et blocages impossibles.
+	if doping_component != null and not doping_component.can_parry_or_block():
+		EventBus.parry_failed.emit()
+		return
+
 	_is_holding = true
 	_hold_timer = 0.0
 	_is_parry_window_open = true

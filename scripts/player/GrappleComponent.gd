@@ -2,9 +2,16 @@ extends Node3D
 class_name GrappleComponent
 
 @export_group("Coût & Portée")
-@export var blood_cost: float = 3.0
+@export var blood_cost: float = 8.0
 @export var max_range: float = 30.0
 @export_flags_3d_physics var grapple_mask: int = 0b101
+
+@export_group("Validation de Surface")
+## Normale d'impact (result.normal) au-delà de laquelle la surface est
+## considérée comme un sol/pente douce et donc refusée. 0.5 ≈ 60° depuis
+## la verticale (≈ 30° d'inclinaison depuis l'horizontale). Seules les
+## surfaces avec normal.y <= ce seuil (murs, pans verticaux) sont acceptées.
+@export_range(0.0, 1.0, 0.01) var floor_normal_threshold: float = 0.5
 
 @export_group("Cinématique")
 @export var travel_speed: float = 45.0
@@ -60,7 +67,9 @@ func _try_fire() -> void:
 		return
 
 	var result: Dictionary = _raycast_target()
-	if result.is_empty():
+	if result.is_empty() or not _is_valid_target(result):
+		# Cible invalide (rien touché, ou sol/pente douce) : aucun coût,
+		# feedback d'échec via le même signal que pour le sang insuffisant.
 		EventBus.grapple_failed.emit(blood_cost)
 		return
 
@@ -70,6 +79,22 @@ func _try_fire() -> void:
 		return
 
 	_resolve_target(result)
+
+
+func _is_valid_target(result: Dictionary) -> bool:
+	var collider: Object = result.get("collider")
+
+	# Les ennemis (hurtbox) sont toujours des cibles valides, quelle que
+	# soit l'orientation de leur collision shape.
+	if collider is HurtboxComponent:
+		return true
+
+	# Décor/environnement : on rejette le sol et les pentes douces en
+	# regardant la normale de la surface touchée. Une normale pointant
+	# fortement vers le haut (normal.y élevé) signifie un sol/pente ;
+	# on n'autorise que les surfaces verticales (murs) ou proches.
+	var normal: Vector3 = result.get("normal", Vector3.UP)
+	return normal.y <= floor_normal_threshold
 
 
 func _raycast_target() -> Dictionary:

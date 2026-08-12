@@ -12,10 +12,14 @@ class_name HUD
 @onready var parry_flash       : ColorRect     = $ParryFlash
 @onready var block_panel       : Control       = $BlockPanel
 @onready var glory_kill_prompt : Label         = $GloryKillPrompt
+@onready var doping_status_panel : VBoxContainer = $DopingStatusPanel
+@onready var doping_status_label : Label         = $DopingStatusPanel/DopingStatusLabel
 
 const COLOR_NORMAL_AMMO: Color = Color(1, 0.95, 0.9, 1)
 const COLOR_BLOOD_AMMO: Color = Color(0.9, 0.1, 0.15, 1)
 const COLOR_FLASH_DENIED: Color = Color(1, 0.2, 0.2, 1)
+const COLOR_DOPING_BOOST: Color = Color(0.4, 1.0, 0.55, 1)
+const COLOR_DOPING_CRASH: Color = Color(1.0, 0.35, 0.3, 1)
 
 const DAMAGE_FLASH_ALPHA: float = 0.28
 const DAMAGE_FLASH_FADE_TIME: float = 0.35
@@ -47,6 +51,11 @@ func _ready() -> void:
 	EventBus.block_ended.connect(_on_block_ended)
 
 	EventBus.grapple_failed.connect(_on_grapple_failed)
+
+	EventBus.doping_activated.connect(_on_doping_activated)
+	EventBus.doping_boost_ended.connect(_on_doping_boost_ended)
+	EventBus.doping_crash_ended.connect(_on_doping_crash_ended)
+	EventBus.doping_denied.connect(_on_doping_denied)
 
 	EventBus.glory_kill_available.connect(_on_glory_kill_available)
 	EventBus.glory_kill_unavailable.connect(_on_glory_kill_unavailable)
@@ -157,6 +166,26 @@ func _on_block_ended() -> void:
 
 
 func _on_grapple_failed(_required_blood: float) -> void:
+	_flash_denied()
+
+
+func _on_doping_activated(serum_type: String, _boost_duration: float) -> void:
+	doping_status_panel.visible = true
+	doping_status_label.text = "%s — BOOST" % serum_type.to_upper()
+	doping_status_label.modulate = COLOR_DOPING_BOOST
+
+
+func _on_doping_boost_ended(serum_type: String) -> void:
+	doping_status_panel.visible = true
+	doping_status_label.text = "%s — CRASH" % serum_type.to_upper()
+	doping_status_label.modulate = COLOR_DOPING_CRASH
+
+
+func _on_doping_crash_ended(_serum_type: String) -> void:
+	doping_status_panel.visible = false
+
+
+func _on_doping_denied(_required_blood: float) -> void:
 	_flash_denied()
 
 

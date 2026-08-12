@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://bxihcj3jy652w" path="res://scripts/player/ShieldComponent.gd" id="9_shield"]
 [ext_resource type="Script" path="res://scripts/player/GrappleComponent.gd" id="10_grapple"]
 [ext_resource type="Script" uid="uid://dt87lquhh7o2j" path="res://scripts/player/PlayerHurtboxComponent.gd" id="11_hurtbox"]
+[ext_resource type="Script" path="res://scripts/player/DopingManager.gd" id="12_doping"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.4
@@ -45,6 +46,9 @@ script = ExtResource("9_shield")
 
 [node name="GrappleComponent" type="Node3D" parent="." unique_id=1394422863]
 script = ExtResource("10_grapple")
+
+[node name="DopingManager" type="Node3D" parent="." unique_id=2103958471]
+script = ExtResource("12_doping")
 
 [node name="HurtboxComponent" type="Area3D" parent="." unique_id=492442084]
 collision_layer = 16

@@ -1,4 +1,1 @@
-res://scripts/weapons/Katana.gd
-res://scenes/ui/HUD.tscn
-res://addons/ultimate_crosshairs/README.md
-res://addons/ultimate_crosshairs/UltimateCrosshairs.gd
+res://scripts/player/Player.gd

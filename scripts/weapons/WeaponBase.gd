@@ -21,8 +21,14 @@ class_name WeaponBase
 @export var allow_held_fire: bool = true
 @export var allow_held_extraction: bool = true
 
+@export_group("Dopage")
+## Les armes de mêlée profitent du multiplicateur de dégâts CàC de la
+## Sérotonine BERSERK ; désactivé pour les armes à distance (Shotgun).
+@export var is_melee: bool = true
+
 var current_ammo: int = 0
 var health_component: HealthComponent
+var doping_component: DopingManager
 var camera: Camera3D
 var player: Node3D
 
@@ -43,6 +49,10 @@ func _process(delta: float) -> void:
 
 func set_health_component(hc: HealthComponent) -> void:
 	health_component = hc
+
+
+func set_doping_component(dm: DopingManager) -> void:
+	doping_component = dm
 
 
 func set_camera(cam: Camera3D) -> void:
@@ -67,7 +77,7 @@ func shoot() -> bool:
 		success = _consume_blood_shot()
 
 	if success:
-		_fire_timer = fire_cooldown
+		_fire_timer = fire_cooldown * _get_fire_cooldown_multiplier()
 		EventBus.shot_fired.emit(weapon_name)
 		_on_shoot_effect()
 	else:
@@ -144,7 +154,31 @@ func _on_extraction_effect() -> void:
 	pass
 
 
+func _get_fire_cooldown_multiplier() -> float:
+	if doping_component != null:
+		return doping_component.get_fire_cooldown_multiplier()
+	return 1.0
+
+
+## Multiplicateur de dégâts appliqué aux attaques CàC (Sérotonine BERSERK).
+## N'affecte pas les armes marquées is_melee = false (ex: Shotgun).
+func _get_damage_multiplier() -> float:
+	if is_melee and doping_component != null:
+		return doping_component.get_melee_damage_multiplier()
+	return 1.0
+
+
+## À utiliser à la place d'un appel direct à health_component.heal_blood()
+## pour tout vol de sang lié à une attaque, afin de profiter du x3 de la
+## Sérotonine BERSERK pendant son Boost.
+func _apply_lifesteal(amount: float) -> float:
+	if doping_component != null:
+		return amount * doping_component.get_lifesteal_multiplier()
+	return amount
+
+
 func _hitscan(damage: float, range_override: float = -1.0) -> Dictionary:
+	var final_damage: float = damage * _get_damage_multiplier()
 	var ray_range: float = range_override if range_override > 0.0 else weapon_range
 	var from: Vector3 = camera.global_transform.origin
 	var to: Vector3 = from - camera.global_transform.basis.z * ray_range
@@ -163,12 +197,13 @@ func _hitscan(damage: float, range_override: float = -1.0) -> Dictionary:
 	var collider: Object = result.get("collider")
 	if collider is HurtboxComponent:
 		var hurtbox: HurtboxComponent = collider
-		hurtbox.take_damage(damage, result.get("position", Vector3.ZERO))
+		hurtbox.take_damage(final_damage, result.get("position", Vector3.ZERO))
 
 	return result
 
 
 func _hitscan_pierce(damage: float, range_override: float = -1.0, max_targets: int = 5) -> Array[HurtboxComponent]:
+	var final_damage: float = damage * _get_damage_multiplier()
 	var hit_list: Array[HurtboxComponent] = []
 	var ray_range: float = range_override if range_override > 0.0 else weapon_range
 	var from: Vector3 = camera.global_transform.origin
@@ -194,7 +229,7 @@ func _hitscan_pierce(damage: float, range_override: float = -1.0, max_targets: i
 
 		if collider is HurtboxComponent:
 			var hurtbox: HurtboxComponent = collider
-			hurtbox.take_damage(damage, result.get("position", Vector3.ZERO))
+			hurtbox.take_damage(final_damage, result.get("position", Vector3.ZERO))
 			hit_list.append(hurtbox)
 		else:
 			# Obstacle solide (mur/décor) : la traversée s'arrête ici.
@@ -204,6 +239,7 @@ func _hitscan_pierce(damage: float, range_override: float = -1.0, max_targets: i
 
 
 func _cone_attack(damage: float, angle_deg: float, range_override: float = -1.0, knockback_force: float = 0.0) -> Array[HurtboxComponent]:
+	var final_damage: float = damage * _get_damage_multiplier()
 	var hit_list: Array[HurtboxComponent] = []
 
 	if camera == null:
@@ -247,7 +283,7 @@ func _cone_attack(damage: float, angle_deg: float, range_override: float = -1.0,
 				if angle > half_angle_rad:
 					continue
 
-		hurtbox.take_damage(damage, hurtbox.global_transform.origin)
+		hurtbox.take_damage(final_damage, hurtbox.global_transform.origin)
 
 		if knockback_force > 0.0:
 			var push_dir: Vector3 = hurtbox.global_transform.origin - origin

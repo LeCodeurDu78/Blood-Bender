@@ -7,6 +7,7 @@ class_name WeaponComponent
 var weapons: Array[WeaponBase] = []
 var current_index: int = -1
 var health_component: HealthComponent
+var doping_component: DopingManager
 var camera: Camera3D
 var player: Node3D
 
@@ -25,6 +26,12 @@ func set_health_component(hc: HealthComponent) -> void:
 	health_component = hc
 	for weapon in weapons:
 		weapon.set_health_component(hc)
+
+
+func set_doping_component(dm: DopingManager) -> void:
+	doping_component = dm
+	for weapon in weapons:
+		weapon.set_doping_component(dm)
 
 
 func _instantiate_weapons() -> void:
@@ -88,10 +95,13 @@ func try_switch_weapon(index: int) -> bool:
 		return false
 
 	var new_weapon: WeaponBase = weapons[index]
-	var success: bool = health_component.consume_blood(new_weapon.morph_cost)
+	var cost_multiplier: float = doping_component.get_weapon_switch_cost_multiplier() if doping_component != null else 1.0
+	var switch_cost: float = new_weapon.morph_cost * cost_multiplier
+
+	var success: bool = health_component.consume_blood(switch_cost)
 
 	if not success:
-		EventBus.morph_failed.emit(new_weapon.weapon_name, new_weapon.morph_cost)
+		EventBus.morph_failed.emit(new_weapon.weapon_name, switch_cost)
 		return false
 
 	_equip_index(index, true)

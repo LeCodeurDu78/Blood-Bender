@@ -52,7 +52,7 @@ func _on_shoot_effect() -> void:
 func _perform_cone_slash(damage: float, angle_deg: float, range_value: float, knockback_force: float) -> Array[HurtboxComponent]:
 	var hits: Array[HurtboxComponent] = _cone_attack(damage, angle_deg, range_value, knockback_force)
 	if not hits.is_empty() and health_component != null:
-		health_component.heal_blood(heal_per_enemy_hit * hits.size())
+		health_component.heal_blood(_apply_lifesteal(heal_per_enemy_hit * hits.size()))
 	return hits
 
 

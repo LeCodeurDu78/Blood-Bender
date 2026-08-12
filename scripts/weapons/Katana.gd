@@ -67,7 +67,7 @@ func _perform_extraction_thrust() -> void:
 	if collider is HurtboxComponent and (collider as HurtboxComponent).is_weak_point:
 		var heal: float = randf_range(extraction_weak_point_heal_min, extraction_weak_point_heal_max)
 		if health_component != null:
-			health_component.heal_blood(heal)
+			health_component.heal_blood(_apply_lifesteal(heal))
 
 
 func perform_morph_attack() -> void:
